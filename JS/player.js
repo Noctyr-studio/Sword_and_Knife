@@ -271,25 +271,6 @@ update(keys, platforms, dt, scene) {
   draw(ctx, cameraX, cameraY){
     super.draw(ctx, cameraX, cameraY);
 
-       // ================= DEBUG STATE =================
-    ctx.fillStyle = "white";
-    ctx.font = "11px monospace";
-
-    const debugText = [
-      `state:${this.state.toUpperCase()}`,
-      `anim:${this.currentAnimation}`,
-      `frame:${this.frameIndex}`,
-      `timer:${this.attackTimer?.toFixed(2) || 0}`,
-      `hit:${this.hitDone}`
-    ];
-
-    debugText.forEach((line, i) => {
-      ctx.fillText(
-        line,
-        this.x - cameraX + 40 ,
-        this.y - cameraY - 40 - (i * 12)
-      );
-    });
     // Opcional: debug adicional
     // ctx.strokeStyle = "lime";
     // ctx.strokeRect(this.x - cameraX, this.y - cameraY, this.w, this.h);

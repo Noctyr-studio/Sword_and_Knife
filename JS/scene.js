@@ -259,8 +259,8 @@ drawUI(ctx){
   const barWidth = 125;
   const barHeight = 25;
   const margin = 50;
-  const x = 400;
-  const y = 30;
+  const x = 350;
+  const y = 400;
 
   const s = this.player.stats;
 

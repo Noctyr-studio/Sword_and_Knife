@@ -1,4 +1,5 @@
 
+import { Debug } from "./main.js";
 
 export class Entity {
   constructor(x, y, w, h, stats = null){
@@ -13,7 +14,11 @@ export class Entity {
     
     this.alive = true;
 
+    this.solid = true;
+
     this.dying = false;
+
+    this.aggroRange
 
     // ataque por tiempo (PRO)
     this.attacking = false;
@@ -51,24 +56,40 @@ export class Entity {
   }
 
   // ------------------ HITBOX / ATAQUE ------------------
+  
+
   isColliding(other){
-    return this.x < other.x + other.w &&
-           this.x + this.w > other.x &&
-           this.y < other.y + other.h &&
-           this.y + this.h > other.y;
+
+  if(!this.solid || !other.solid){
+    return false;
   }
 
+  return this.x < other.x + other.w &&
+         this.x + this.w > other.x &&
+         this.y < other.y + other.h &&
+         this.y + this.h > other.y;
+}
 
-  update(dt){
 
+update(dt){
+
+  // animaciones SIEMPRE
   this.updateAnimation(dt);
 
-  // 🔥 SIEMPRE actualizar para debug visual
+  // debug / visual
   this.updateAttackBox();
 
+  // cooldowns
   if(this.attackCooldown > 0){
     this.attackCooldown -= dt;
   }
+
+  // muerto = no ejecutar lógica viva
+  if(this.dying){
+    return;
+  }
+
+  // IA / movimiento / combate vivo
 }
 
   // calcular attackBox automático según facing y posición actual
@@ -178,6 +199,7 @@ die(){
 
   if(this.dying) return;
 
+  this.solid = false;
   this.dying = true;
 
   this.attacking = false;
@@ -295,40 +317,95 @@ draw(ctx, cameraX, cameraY){
 
   // ================= HP BAR =================
   if(this.showHealthBar && this.stats){
+    
     this.drawHealthBar(ctx, cameraX, cameraY);
   }
-
+  
   // ================= DEBUG =================
+  
+ if (Debug.showHitboxes) {
 
-  //  HITBOX CUERPO
-  ctx.strokeStyle = "blue";
-  ctx.lineWidth = 2;
-  ctx.strokeRect(drawX, drawY, this.w, this.h);
+  // HITBOX CUERPO
+  if (this.x && this.y && this.w && this.h) {
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 2;
 
-  //  HITBOX ATAQUE
-  if(this.showAttackBox && this.attackBox){
-    ctx.strokeStyle = "cyan";
-    ctx.setLineDash([4,3]);
+    ctx.strokeRect(drawX, drawY, this.w, this.h);
+  }
 
-    ctx.strokeRect(
-      this.attackBox.x - cameraX,
-      this.attackBox.y - cameraY,
-      this.attackBox.w,
-      this.attackBox.h
-    );
+  // HITBOX ATAQUE
+    if (this.showAttackBox && this.attackBox) {
+      ctx.strokeStyle = "cyan";
+      ctx.setLineDash([4, 3]);
 
-    ctx.setLineDash([]);
+      ctx.strokeRect(
+        this.attackBox.x - cameraX,
+        this.attackBox.y - cameraY,
+        this.attackBox.w,
+        this.attackBox.h
+      );
+
+      ctx.setLineDash([]);
+    
+
+      // ================= DEBUG STATE =================
+      ctx.fillStyle = "white";
+      ctx.font = "11px monospace";
+
+      const debugText = [
+        `state:${this.state.toUpperCase()}`,
+        `anim:${this.currentAnimation}`,
+        `frame:${this.frameIndex}`,
+        `timer:${this.attackTimer?.toFixed(2) || 0}`,
+        `hit:${this.hitDone}`
+      ];
+
+      debugText.forEach((line, i) => {
+        ctx.fillText(
+          line,
+          this.x - cameraX + 40 ,
+          this.y - cameraY - 80 - (i * 12)
+        );
+      });
+      // ================= DEBUG AGGRO RANGE =================
+      if (this.aggroRange){
+        
+        const centerX = this.x + this.w / 2 - cameraX;
+        const centerY = this.y + this.h / 2 - cameraY;
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, this.aggroRange, 0, Math.PI * 2);
+
+        // color según estado
+        if(this.state === "chase"){
+        ctx.strokeStyle = "red";
+        } else {
+          ctx.strokeStyle = "lime";
+        }
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = this.isAggro
+          ? "rgba(255, 0, 0, 0.1)"
+          : "rgba(0, 255, 0, 0.05)";
+        ctx.fill();
+
+      }
+    }
   }
 }
 
   drawHealthBar(ctx, cameraX, cameraY){
-    const barWidth = this.w;
-    const barHeight = 12;
-    const drawX = this.x - cameraX + (this.w - barWidth)/2;
-    const drawY = this.y - cameraY - 70;
-    ctx.fillStyle = "black";
-    ctx.fillRect(drawX, drawY, barWidth, barHeight);
-    ctx.fillStyle = "red";
-    ctx.fillRect(drawX, drawY, (this.stats.hp / this.stats.maxHp) * barWidth, barHeight);
+    if (!this.dying){
+      const barWidth = this.w;
+      const barHeight = 12;
+      const drawX = this.x - cameraX + (this.w - barWidth)/2;
+      const drawY = this.y - cameraY - 70;
+      ctx.fillStyle = "black";
+      ctx.fillRect(drawX, drawY, barWidth, barHeight);
+      ctx.fillStyle = "red";
+      ctx.fillRect(drawX, drawY, (this.stats.hp / this.stats.maxHp) * barWidth, barHeight);
+    }
+    else{return}
   }
 }

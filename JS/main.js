@@ -14,6 +14,10 @@ export const GAME_HEIGHT = 576;
 canvas.width = GAME_WIDTH;
 canvas.height = GAME_HEIGHT;
 
+export const Debug = {
+  showHitboxes: false
+};
+
 export const WORLD_WIDTH = 6000;
 export const WORLD_HEIGHT = 2000;
 
@@ -66,6 +70,22 @@ const mobileButtons = {
 
 window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+// DEBUG HITBOXES
+
+
+// ESCUCHAR F2
+window.addEventListener("keydown", (e) => {
+  if (e.key === "F2") {
+    e.preventDefault();
+
+    Debug.showHitboxes = !Debug.showHitboxes;
+
+    console.log(
+      "Hitboxes:",
+      Debug.showHitboxes ? "ON" : "OFF"
+    );
+  }
+});
 
 // ==================== ESC ====================
 const fullscreenButton = {

@@ -78,7 +78,6 @@ update(dt, platforms, player){
     this.frameIndex === frames.length - 1;
 
   if(finished){; 
-    //this.alive = false;
     
   }
 
@@ -120,10 +119,17 @@ update(dt, platforms, player){
   // 🔥 DISTANCIAS
   const dx = (player.x + player.w/2) - (this.x + this.w/2);
   const dy = (player.y + player.h/2) - (this.y + this.h/2);
+
+  const absDx = Math.abs(dx);
+
   const dist = Math.hypot(dx, dy);
 
   // 🔥 FACING
-  this.facing = dx > 0 ? 1 : -1;
+  if (this.state !== "attack") {
+    if (Math.abs(dx) > 10) {
+      this.facing = dx > 0 ? 1 : -1;
+    }
+  }
 
   // 🔥 COOLDOWN
   if(this.attackCooldown > 0){
@@ -162,11 +168,14 @@ update(dt, platforms, player){
       }
 
       // 🔥 MOVER SOLO SI NO ESTÁ CERCA
-      if(dist > this.attackRange * 0.7){
+      if(absDx > this.attackRange * 0.7){
         this.x += Math.sign(dx) * this.speed * dt;
+        this.play("run");
       }
-
-      this.play("run");
+      else  {
+        this.play("idle")        
+      }
+      
 
       // 🔥 PERDER AGGRO
       if(dist > this.aggroRange){
@@ -209,47 +218,6 @@ update(dt, platforms, player){
   
 draw(ctx, cameraX, cameraY){
   super.draw(ctx, cameraX, cameraY);
-
-  // ================= DEBUG AGGRO RANGE =================
-  const centerX = this.x + this.w / 2 - cameraX;
-  const centerY = this.y + this.h / 2 - cameraY;
-
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, this.aggroRange, 0, Math.PI * 2);
-
-  // color según estado
-  if(this.state === "chase"){
-  ctx.strokeStyle = "red";
-  } else {
-    ctx.strokeStyle = "lime";
-  }
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  ctx.fillStyle = this.isAggro
-    ? "rgba(255, 0, 0, 0.1)"
-    : "rgba(0, 255, 0, 0.05)";
-  ctx.fill();
-
-    // ================= DEBUG STATE =================
-  ctx.fillStyle = "white";
-  ctx.font = "11px monospace";
-
-  const debugText = [
-    `state:${this.state.toUpperCase()}`,
-    `anim:${this.currentAnimation}`,
-    `frame:${this.frameIndex}`,
-    `timer:${this.attackTimer?.toFixed(2) || 0}`,
-    `hit:${this.hitDone}`
-  ];
-
-  debugText.forEach((line, i) => {
-    ctx.fillText(
-      line,
-      this.x - cameraX + 40 ,
-      this.y - cameraY - 80 - (i * 12)
-    );
-  });
 
 }
 
