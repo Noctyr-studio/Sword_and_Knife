@@ -12,6 +12,8 @@ export class Entity {
     const defaultStats = { hp:100, maxHp:100, energy:50, maxEnergy:50, coins:0 };
     this.stats = {...defaultStats, ...stats};
     
+    this.projectile = false
+    
     this.alive = true;
 
     this.solid = true;
@@ -321,34 +323,39 @@ draw(ctx, cameraX, cameraY){
     this.drawHealthBar(ctx, cameraX, cameraY);
   }
   
-  // ================= DEBUG =================
+  this.drawDebug(ctx, cameraX, cameraY)
+
+}
+drawDebug(ctx, cameraX, cameraY){
   
- if (Debug.showHitboxes) {
+  const drawX = this.x - cameraX;
+  const drawY = this.y - cameraY;
+
+  if (!Debug.showHitboxes) return;
 
   // HITBOX CUERPO
-  if (this.x && this.y && this.w && this.h) {
-    ctx.strokeStyle = "blue";
-    ctx.lineWidth = 2;
+  ctx.strokeStyle = "blue";
+  ctx.lineWidth = 2;
 
-    ctx.strokeRect(drawX, drawY, this.w, this.h);
-  }
+  ctx.strokeRect(drawX, drawY, this.w, this.h);
 
   // HITBOX ATAQUE
-    if (this.showAttackBox && this.attackBox) {
-      ctx.strokeStyle = "cyan";
-      ctx.setLineDash([4, 3]);
+  if(this.showAttackBox && this.attackBox){
 
-      ctx.strokeRect(
-        this.attackBox.x - cameraX,
-        this.attackBox.y - cameraY,
-        this.attackBox.w,
-        this.attackBox.h
-      );
+    ctx.strokeStyle = "cyan";
+    ctx.setLineDash([4,3]);
 
-      ctx.setLineDash([]);
+    ctx.strokeRect(
+      this.attackBox.x - cameraX,
+      this.attackBox.y - cameraY,
+      this.attackBox.w,
+      this.attackBox.h
+    );
+
+    ctx.setLineDash([]);
     
-
-      // ================= DEBUG STATE =================
+    if (!this.projectile){
+    // ================= DEBUG STATE =================
       ctx.fillStyle = "white";
       ctx.font = "11px monospace";
 
@@ -389,13 +396,12 @@ draw(ctx, cameraX, cameraY){
           ? "rgba(255, 0, 0, 0.1)"
           : "rgba(0, 255, 0, 0.05)";
         ctx.fill();
-
       }
-    }
   }
-}
+}}
+  
 
-  drawHealthBar(ctx, cameraX, cameraY){
+drawHealthBar(ctx, cameraX, cameraY){
     if (!this.dying){
       const barWidth = this.w;
       const barHeight = 12;

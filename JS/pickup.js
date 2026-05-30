@@ -1,5 +1,5 @@
-import { Entity } from "./entity.js";
 
+import { Entity } from "./entity.js";
 
 export class Pickup extends Entity {
 

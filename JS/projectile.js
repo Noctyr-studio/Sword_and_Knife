@@ -8,7 +8,7 @@ export class Projectile extends Entity {
     super(x, y, 40, 16);
 
     this.dir = dir;
-
+    this.projectile = true
     this.speed = 200;
 
     this.alive = true;
@@ -16,8 +16,8 @@ export class Projectile extends Entity {
     // ================= COMBAT =================
 
     this.attackBoxOffset = {
-      x: -30,
-      y: 15,
+      x: -20,
+      y: 0,
       w: this.w,
       h: this.h,
       damage: 15
@@ -83,27 +83,16 @@ export class Projectile extends Entity {
 
     ctx.save();
 
-    ctx.translate(drawX + renderW / 2, drawY + renderH / 2);
+    ctx.translate(drawX +5 + renderW / 2, drawY -15 + renderH / 2);
 
     ctx.rotate(this.dir === 1 ? Math.PI / 2 : -Math.PI / 2);
 
     ctx.drawImage(img, -renderW / 2, -renderH / 2, renderW, renderH);
 
     ctx.restore();
+    this.drawDebug(ctx, cameraX, cameraY);
 
-    // ================= DEBUG =================
-
-    if(this.showAttackBox && this.attackBox){
-
-      ctx.strokeStyle = "yellow";
-
-      ctx.strokeRect(
-        this.attackBox.x - cameraX,
-        this.attackBox.y - cameraY,
-        this.attackBox.w,
-        this.attackBox.h
-      );
-    }
+  
   
 
   }
