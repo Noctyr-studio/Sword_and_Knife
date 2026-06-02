@@ -9,7 +9,7 @@ export class Projectile extends Entity {
 
     this.dir = dir;
     this.projectile = true
-    this.speed = 200;
+    this.speed = 400;
 
     this.alive = true;
 
@@ -20,7 +20,7 @@ export class Projectile extends Entity {
       y: 0,
       w: this.w,
       h: this.h,
-      damage: 15
+      damage: 50
     };
 
     this.showAttackBox = true;

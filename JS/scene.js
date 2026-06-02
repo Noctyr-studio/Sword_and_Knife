@@ -14,29 +14,57 @@ bgImage.src = "bg/Background_01.png";
 export class Scene {
 
 constructor(){
-this.player = new Player(800,0);
+this.player = new Player(500,0);
 
 this.platforms=[
+
+// PISO 1
 new Platform(0,500,4000,40),
-new Platform(400,30,40,2000),
+
 new Platform(2400,400,400,20),
 new Platform(2600,250,400,20),
-new Platform(3300,200,100,400)
+new Platform(3300,200,100,400),
+
+// PISO 2
+new Platform(3800,675,400,20),
+new Platform(4000,850,400,20),
+new Platform(4600,675,400,20),
+new Platform(5200,675,400,20),
+new Platform(5900,500,100,20), // CERCA DE LIM DER
+new Platform(1000,1000,4000,40),
+
+// PISO 3
+new Platform(700,1175,200,20),
+new Platform(300,1350,400,20),
+new Platform(1000,1500,5000,40),
+
+// LIMITES
+new Platform(0,50,50,2000), // IZQ
+new Platform(0,1950,6000,50),  //ABAJO
+new Platform(5950,50,50,2000), // DER
 
 ];
 
 this.enemies = [
   new Enemy(1500, 380),
-  new Enemy(2800, 100)
+  new Enemy(2800, 100),
+  new Enemy(2000, 600),
+  new Enemy(1500, 900),
+  new Enemy(2000, 1400),
+  new Enemy(3000, 1400),
+  new Enemy(5000, 1400)
 ];
 
 this.projectiles = [];
 
 this.pickups=[
 
+new Pickup(1200,400,30,30,"coin",10),
+new Pickup(5900,600,30,30,"coin",10),
+new Pickup(5900,200,30,30,"coin",10),
 new Pickup(1400,400,30,30,"hp",20),
 new Pickup(1600,400,30,30,"energy",20),
-new Pickup(3500,400,30,30,"coin",1)
+new Pickup(5800,1800,100,100,"gold_chest",40)
 
 ];
 
@@ -259,8 +287,8 @@ drawUI(ctx){
   const barWidth = 125;
   const barHeight = 25;
   const margin = 50;
-  const x = 350;
-  const y = 400;
+  const x = 300;
+  const y = 20;
 
   const s = this.player.stats;
 

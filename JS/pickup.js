@@ -25,6 +25,12 @@ export class Pickup extends Entity {
       
     }
 
+    else if(type === "gold_chest"){
+      this.loadAnimations("pickups", ["gold_chest"], 1);
+      this.play("gold_chest");
+      
+    }
+
     else if(type === "hp"){
       this.loadAnimations("pickups", ["hp"], 1);
       this.play("hp");
@@ -107,6 +113,9 @@ export class Pickup extends Entity {
     else if(this.type === "coin"){
       entity.stats.coins += this.value;
     }
-  }
+    else if(this.type === "gold_chest"){
+      entity.stats.coins += this.value;
+  }}
+
 
 }

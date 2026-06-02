@@ -9,31 +9,34 @@ constructor(x, y){
 
     hp: 80,
     maxHp: 100,
-    energy: 40,
+    energy: 80,
     maxEnergy: 100,
-    coins: 43
+    coins: 0
   });
 
    this.actionLocked = false;
 
-   this.attackDamage = 20;
-
+    
     this.attackBox = {
       x: this.x,
       y: this.y,
       w: 90,
       h: 80,
-      damage: this.attackDamage
+      damage: this.attackBoxOffset.damage 
     };
+
+    this.attackBoxOffset.damage = 50
 
     this.showAttackBox = true;
 
     this.hitDone = false;
 
     this.attackData = {
-    hitStart: 0.4,
-    hitEnd: 0.5
+    hitStart: 0.3,
+    hitEnd: 0.4
     };
+    
+    this.animFPS = 20;  // default
 
     this.lastThrowPressed = false;
 
@@ -66,7 +69,7 @@ constructor(x, y){
 
 update(keys, platforms, dt, scene) {
 
-  if (this.stats.coins == 44){
+  if (this.stats.coins >= 50){  // ACA ESTA LA CONDICION DE VICTORIA
 
      scene.gameDone = true;
    

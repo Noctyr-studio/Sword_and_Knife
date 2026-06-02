@@ -22,10 +22,10 @@ export class Enemy extends Entity {
       damage: this.attackBoxOffset.damage // 🔥 CLAVE
     };
 
-    this.attackBoxOffset.damage = 20
+    this.attackBoxOffset.damage = 50
     
     this.dying= false;
-    this.animFPS = 16; 
+    this.animFPS = 20; 
 
     this.velocityY = 0;
     this.jumping = true;

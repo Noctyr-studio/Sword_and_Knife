@@ -27,14 +27,14 @@ export class Entity {
     this.attackTimer = 0;
 
     this.attackData = {
-      hitStart: 0.5,
-      hitEnd: 0.6
+      hitStart: 0.3,
+      hitEnd: 0.4
     };
 
     this.hitDone = false;
 
     this.attackCooldown = 0;
-    this.attackCooldownTime = 0.8; // ajustá a gusto
+    this.attackCooldownTime = 0.3; // ajustá a gusto
   
     this.showAttackBox = false;
 
@@ -48,7 +48,7 @@ export class Entity {
     this.frameCounter = 0;
     
     this.loop = true; // default
-    this.animFPS = 16;  // default
+    this.animFPS = 20;  // default
 
     this.showHealthBar = false;
 

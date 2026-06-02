@@ -104,7 +104,7 @@ export class LoadingScreen {
     ctx.drawImage(
       this.logo,
       width/2 - logoSize/2,
-      height/2 - 150,
+      height/2 - 200,
       logoSize,
       logoSize
     );
@@ -118,7 +118,7 @@ export class LoadingScreen {
     ctx.fillText(
       "Noctyr Studio",
       width / 2,
-      height / 2 + 80
+      height / 2 + 30
     );
 
 
@@ -128,7 +128,7 @@ export class LoadingScreen {
     const barHeight = 30;
 
     const x = width/2 - barWidth/2;
-    const y = height/2 + 100;
+    const y = height/2 + 50;
 
     // fondo barra
     ctx.fillStyle = "#222";
@@ -167,7 +167,7 @@ export class LoadingScreen {
       ctx.fillText(
        `Loading... ${percent}%`,
         width / 2,
-        height / 2 + 120
+        height / 2 + 70
       );
 
     } else {
@@ -186,7 +186,7 @@ export class LoadingScreen {
       ctx.fillText(
         "Press ENTER",
         width / 2,
-        height / 2 + 120
+        height / 2 + 70
       );
 
       ctx.globalAlpha = 1;
@@ -198,7 +198,32 @@ export class LoadingScreen {
       ctx.fillText(
         "Sword & Knife - v0.1.0",
         width / 2,
+        height - 150
+      );
+
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.font = "20px monospace";
+      ctx.textAlign = "center";
+
+      ctx.fillText(
+        "Movement = Arrow keys",
+        width / 2,
         height - 100
+      );
+       ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.font = "20px monospace";
+      ctx.textAlign = "center";
+
+      ctx.fillText(
+        "Attack = D " ,
+        width / 2,
+        height - 70
+        
+      );
+      ctx.fillText(
+       "Throw = F",
+        width / 2,
+        height - 40
       );
 
       ctx.restore();
