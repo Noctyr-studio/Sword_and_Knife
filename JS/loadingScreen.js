@@ -196,7 +196,7 @@ export class LoadingScreen {
       ctx.textAlign = "center";
 
       ctx.fillText(
-        "Sword & Knife - v0.1.0",
+        "Sword & Knife - v1.0",
         width / 2,
         height - 150
       );
